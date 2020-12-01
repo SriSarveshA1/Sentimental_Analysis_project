@@ -6,6 +6,7 @@ from nltk.tag import pos_tag
 from nltk import NaiveBayesClassifier
 from nltk import classify
 import random
+import pickle
 
 
 
@@ -85,6 +86,9 @@ def main():
     print("Accuracy:",classify.accuracy(classifier,test_data))
     print(classifier.show_most_informative_features(10))
 
+    #Step 7:Save the Model
+    with open("my_classifier.pickle","wb") as f:
+        pickle.dump(classifier,f)
 
 if __name__=="__main__":
     main()
