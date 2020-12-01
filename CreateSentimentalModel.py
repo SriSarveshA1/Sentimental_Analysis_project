@@ -1,3 +1,5 @@
+from random import random
+
 from nltk.corpus import twitter_samples,stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
@@ -59,11 +61,17 @@ def main():
     print(positive_tweets[0])
     print(negative_tweets[0])
 
-    #Steo 3:Transform Data
+    #Step 3:Transform Data
     positive_tweets=[(transform_features(token),"Positive") for token in positive_tweets]
     negative_tweets=[(transform_features(token),"Negative") for token in negative_tweets]
     print(positive_tweets)
     print(negative_tweets)
+
+    #Step 4:Create DataSet
+    dataset=positive_tweets+negative_tweets
+    random.shuffle(dataset)
+    training_data=dataset[:7000]
+    test_data=dataset[7000:]
 
 
 if __name__=="__main__":
