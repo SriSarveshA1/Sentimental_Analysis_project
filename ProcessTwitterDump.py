@@ -57,18 +57,22 @@ def process(input_file, output_file):
 
     classifier=MoodClassifier()
     cnt=0
+    stat={'Positive':0,'Negative':0}
     for tweet in tweets:
         if 'retweeted_status' in tweet:
             tweet=tweet['retweeted_status']
-
-        print("Mood",classifier.get_mood(tweet['full_text']),tweet['full_text  '])
+        stat[classifier.get_mood(tweet['full_text'])]+=1
         cnt+=1
         if cnt > 10:
-            break
+            pass
+    print(stat)
+    print("The mood is",stat['Positive']/(stat['Positive']+ stat['Negative']))
 
+    #The mood is 0.6401488592848282 (Java)
+    #The mood is 0.5951257186990474 (Python)
 
 
 
 if __name__ == "__main__":
-    input_file = "tweets_with_java.json"
+    input_file = "tweets_with_python.json"
     process(input_file, None)
