@@ -23,8 +23,6 @@ def to_lower(token):
 
 def lemmatize(token):
     lemmatizer=WordNetLemmatizer()
-
-
     result=[]
     for item,tag in pos_tag(token):
         if tag[0].lower() in "nva":   #n= noun v=verb a=adjective
@@ -37,6 +35,14 @@ def lemmatize(token):
 def remove_stop_words(token,stop_words):
     return [item for item in token if item not in stop_words]
 
+
+def transform_features(token):
+    feature_set={}
+    for feature in token:
+        if feature not in feature_set:
+            feature_set[feature]=0
+        feature_set[feature]+=1
+    return feature_set
 
 
 def main():
@@ -53,6 +59,11 @@ def main():
     print(positive_tweets[0])
     print(negative_tweets[0])
 
+    #Steo 3:Transform Data
+    positive_tweets=[(transform_features(token),"Positive") for token in positive_tweets]
+    negative_tweets=[(transform_features(token),"Negative") for token in negative_tweets]
+    print(positive_tweets)
+    print(negative_tweets)
 
 
 if __name__=="__main__":
