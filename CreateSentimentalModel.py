@@ -1,8 +1,13 @@
-from random import random
+
 
 from nltk.corpus import twitter_samples,stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
+from nltk import NaiveBayesClassifier
+from nltk import classify
+import random
+
+
 
 #step1:Gather data
 #step2:Clean,lemmatize and remove stop words from data
@@ -72,6 +77,13 @@ def main():
     random.shuffle(dataset)
     training_data=dataset[:7000]
     test_data=dataset[7000:]
+
+    #Step 5:Train the model
+    classifier=NaiveBayesClassifier.train(training_data)
+
+    #Step 6:Test Accuracy
+    print("Accuracy:",classify.accuracy(classifier,test_data))
+    print(classifier.show_most_informative_features(10))
 
 
 if __name__=="__main__":
