@@ -55,6 +55,19 @@ def process(input_file, output_file):
 
     print("Number of tweets", len(tweets))
 
+    classifier=MoodClassifier()
+    cnt=0
+    for tweet in tweets:
+        if 'retweeted_status' in tweet:
+            tweet=tweet['retweeted_status']
+
+        print("Mood",classifier.get_mood(tweet['full_text']),tweet['full_text  '])
+        cnt+=1
+        if cnt > 10:
+            break
+
+
+
 
 if __name__ == "__main__":
     input_file = "tweets_with_java.json"
