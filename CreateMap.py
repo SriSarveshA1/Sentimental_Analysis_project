@@ -1,6 +1,7 @@
 import csv
 import folium
 import geopandas
+import pandas as pd
 
 def load_csv_file(csv_file):
     content = []
@@ -24,9 +25,33 @@ def create_map(csv_file, output_html):
     my_map=folium.Map()  #folium is a library that is used to create a Map
     my_map.save(output_html) #And then we are saving that map into the html file
     world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
-    print(world.head()) # we are printing the first some rows and it has headers like pop_est,continent,gdp_md_est,geometry(The shape of the country)
-    print(world.loc[0]) #We are printing the first row of the table that has pop_est,continent,gdp_md_est,geometry(The shape of the country)
+
+    country_names=[]
+    moods=[]
+    for country in mood_location:
+        mood=mood_location[country]['Positive']/(mood_location[country]['Positive']+mood_location[country]['Negative']) #We are calculating the overall postive tweets value pecrcentage
+        moods.append(mood)  #And we are appending each mood into the moods list
+        country_names.append(country) # And also we are appending each country name into the country_names list
+
+    data_to_plot=pd.DataFrame({'Country':country_names,'Mood':moods})   #We are creating a dataframe inside which we have two columns Country=All country names ,Mood=That says a number of positive tweets of a brand in each country
+
+    folium.Choropleth(               #we are using this folium to color the different parts of a country in a continent
+        geo_data=world,
+        name='choropleth',
+        data=data_to_plot,
+        columns=['Country', 'Mood'], #Columns that we are going to pass is Country and mood
+        key_on='feature.properties.name',
+        fill_color='YlGn',           #Colors are yellow and green
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        legend_name='Mood'
+    ).add_to(my_map)
+
+    folium.LayerControl().add_to(my_map)  #we are giving the layer control to the my_map value
+    my_map.save(output_html)              #And at last we are saving the my_map into the output.html
+
 
 
 if __name__ == "__main__":
     create_map("tweet_mood_java.csv", "mood_java.html")
+    create_map("tweet_mood_python.csv", "mood_python.html")
