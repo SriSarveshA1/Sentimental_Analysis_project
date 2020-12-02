@@ -1,5 +1,6 @@
 import csv
 import folium
+import geopandas
 
 def load_csv_file(csv_file):
     content = []
@@ -22,6 +23,9 @@ def create_map(csv_file, output_html):
 
     my_map=folium.Map()  #folium is a library that is used to create a Map
     my_map.save(output_html) #And then we are saving that map into the html file
+    world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
+    print(world.head()) # we are printing the first some rows and it has headers like pop_est,continent,gdp_md_est,geometry(The shape of the country)
+    print(world.loc[0]) #We are printing the first row of the table that has pop_est,continent,gdp_md_est,geometry(The shape of the country)
 
 
 if __name__ == "__main__":
