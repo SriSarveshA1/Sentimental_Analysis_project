@@ -2,6 +2,7 @@ import csv
 import folium
 import geopandas
 import pandas as pd
+from folium.plugins import FastMarkerCluster
 
 def load_csv_file(csv_file):
     content = []
@@ -46,6 +47,13 @@ def create_map(csv_file, output_html):
         line_opacity=0.2,
         legend_name='Mood'
     ).add_to(my_map)
+
+    cluster_data=[]
+    for row in mood_content:#we are retriving each row from the csv table
+        if row['latitude']!='': #if the latitude and longitude is not empty we are doing the next step
+            cluster_data.append([float(row['latitude']), float(row['longitude'])])  # We are passing list of latitude and longitude and appending it into the cluster_data
+
+    FastMarkerCluster(cluster_data).add_to(my_map)   #we are passing the list of latitudes,logitudes a cluster_data to FastMarkerCluster which forms a cluster kind of thing into the map.So the no of mood items in each longitude and latitude will be in the map
 
     folium.LayerControl().add_to(my_map)  #we are giving the layer control to the my_map value
     my_map.save(output_html)              #And at last we are saving the my_map into the output.html
