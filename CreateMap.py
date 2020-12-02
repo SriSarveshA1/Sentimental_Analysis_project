@@ -1,5 +1,5 @@
 import csv
-
+import folium
 
 def load_csv_file(csv_file):
     content = []
@@ -20,12 +20,8 @@ def create_map(csv_file, output_html):
             mood_location[item['location']]={'Positive':0,'Negative':0}
         mood_location[item['location']][item['mood']]+=1   #for each location the mood is counted according to its occurances
 
-    cnt=0
-    for item in mood_location:  #from the dictionary we are taking the country name and along with that we print how many positive and negative
-        print(item,mood_location[item])
-        cnt+=1
-        if cnt>10:
-            break
+    my_map=folium.Map()  #folium is a library that is used to create a Map
+    my_map.save(output_html) #And then we are saving that map into the html file
 
 
 if __name__ == "__main__":
